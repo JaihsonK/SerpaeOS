@@ -1,0 +1,17 @@
+*Close a program instantly by pressing ctrl + Q
+
+*stdlib "puts" function is available
+
+*Date is shown on the diectory screen
+
+*Bug fix for multithreaded programs and task termination
+
+*Spelling corrections (Canadian English)
+
+*Compatability for up to 2 disks (IDE master and slave disks on primary IDE controller). Corresponds to -hda and -hdb on QEmu and KVM
+
+*New FAT32 filesystem compatability
+
+*FAT16 bug fixes (fat16_delete and fat16_write)
+
+*More! Type "man" in the shell.
