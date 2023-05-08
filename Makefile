@@ -1,4 +1,4 @@
-FILES = ./build/kernel.asm.o ./build/kernel.o ./build/time/time.o ./build/graphics/graphics.o ./build/loader/formats/elf.o ./build/power/power.o ./build/isr80h/process.o ./build/sound/sound.o ./build/fs/fat/fat16_write.o ./build/fs/fat32/fat32.o ./build/loader/formats/elfloader.o ./build/isr80h/memory.o ./build/isr80h/isr80h.o ./build/keyboard/keyboard.o ./build/keyboard/classic.o ./build/isr80h/io.o ./build/isr80h/misc.o ./build/disk/disk.o ./build/disk/streamer.o ./build/task/process.o ./build/task/task.o ./build/task/task.asm.o ./build/task/tss.asm.o ./build/fs/pparser.o ./build/fs/file.o ./build/fs/fat/fat16.o ./build/string/string.o ./build/idt/idt.asm.o ./build/idt/idt.o ./build/memory/memory.o ./build/io/io.asm.o ./build/gdt/gdt.o ./build/gdt/gdt.asm.o ./build/memory/heap/heap.o ./build/memory/heap/kheap.o ./build/memory/paging/paging.o ./build/memory/paging/paging.asm.o
+FILES = ./build/kernel.asm.o ./build/kernel.o ./build/time/time.o ./build/graphics/graphics.o ./build/pci/pci.o ./build/loader/formats/elf.o ./build/power/power.o ./build/isr80h/process.o ./build/sound/sound.o ./build/fs/fat/fat16_write.o ./build/fs/fat32/fat32.o ./build/fs/iso_9660/iso_9660.o ./build/loader/formats/elfloader.o ./build/isr80h/memory.o ./build/isr80h/isr80h.o ./build/keyboard/keyboard.o ./build/keyboard/classic.o ./build/isr80h/io.o ./build/isr80h/misc.o ./build/disk/disk.o ./build/disk/streamer.o ./build/task/process.o ./build/task/task.o ./build/task/task.asm.o ./build/task/tss.asm.o ./build/fs/pparser.o ./build/fs/file.o ./build/fs/fat/fat16.o ./build/string/string.o ./build/idt/idt.asm.o ./build/idt/idt.o ./build/memory/memory.o ./build/io/io.asm.o ./build/gdt/gdt.o ./build/gdt/gdt.asm.o ./build/memory/heap/heap.o ./build/memory/heap/kheap.o ./build/memory/paging/paging.o ./build/memory/paging/paging.asm.o
 INCLUDES = -I./src
 FLAGS = -g -ffreestanding -falign-jumps -falign-functions -falign-labels -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0 -Iinc
 
@@ -138,6 +138,11 @@ all: ./bin/boot.bin ./bin/kernel.bin user_programs
 ./build/sound/sound.o: ./src/sound/sound.c
 	i686-elf-gcc $(INCLUDES) -I./src/sound $(FLAGS) -std=gnu99 -c ./src/sound/sound.c -o ./build/sound/sound.o
 
+./build/pci/pci.o: ./src/pci/pci.c
+	i686-elf-gcc $(INCLUDES) -I./src/pci $(FLAGS) -std=gnu99 -c ./src/pci/pci.c -o ./build/pci/pci.o
+
+./build/fs/iso_9660/iso_9660.o: ./src/fs/iso_9660/iso_9660.c
+	i686-elf-gcc $(INCLUDES) -I./src/iso_9660 $(FLAGS) -std=gnu99 -c ./src/fs/iso_9660/iso_9660.c -o ./build/fs/iso_9660/iso_9660.o
 
 user_programs:
 	cd ./programs/stdlib && $(MAKE) all
@@ -171,6 +176,11 @@ user_programs:
 
 	cd ./programs/musicbox && $(MAKE) all
 	cp ./programs/musicbox/musicbox ./dirsys/usr/bin
+
+	cd ./programs/new_usr && $(MAKE) all
+	cp ./programs/new_usr/new_usr ./dirsys/sys/bin
+
+	cd ./programs/MinGS && $(MAKE) all && $(MAKE) move
 	
 
 user_programs_clean:
@@ -183,6 +193,8 @@ user_programs_clean:
 	cd ./programs/fapp && $(MAKE) clean
 	cd ./programs/fwrite && $(MAKE) clean
 	cd ./programs/sosupdt && $(MAKE) clean
+	cd ./programs/MinGS && $(MAKE) clean
+	cd ./programs/new_usr && $(MAKE) clean
 
 clean: user_programs_clean
 	rm -rf ./bin/boot.bin
@@ -193,8 +205,8 @@ clean: user_programs_clean
 	rm -rf ./build/kernelfull.o
 	rm -rf ./bin/serpaeos.ki
 comment:
-	#add -hdb ./path to either run or test to add a second disk!
+	#add -hdb ./path to add a second disk (slave disk)!
 run:
-	sudo qemu-system-i386 -hda ./bin/SerpaeOS.img  -soundhw pcspk
+	sudo qemu-system-i386 -hda ./bin/SerpaeOS.img
 test:
-	sudo kvm -hda ./bin/SerpaeOS.img  -soundhw pcspk
+	sudo kvm -hda ./bin/SerpaeOS.img -soundhw pcspk 

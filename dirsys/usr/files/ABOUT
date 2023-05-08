@@ -1,0 +1,127 @@
+SerpaeOS is a free, open source, hobbyist project written in C and x86 assembly
+by Jaihson Kresak (serpaeos.devers@gmail.com). SerpaeOS is based on PeachOS 
+[https://github.com/nibblebits/PeachOS]
+This is a manual to features of the OS as well as software that came with this 
+version of SerpaeOS.
+
+1. The Directory Screen. The directory screen can be accessed at any time by 
+pressing and releasing the super key (ie the Windows Logo Key). On it, you will
+find the current kernel version that you are running and a list of current 
+processes. 
+The first process listed is the Shell session opened by the kernel upon 
+startup. It can be accessed any time by pressing the <home> key. The other 
+processes have assigned a unique process ID (integer between 1 and 12, 
+inclusivly). If it becomes necessary to know a process ID, you can find it here
+on the directoy screen. Processes can be accessed simply by pressing the 
+function key coresponding to the process ID (process ID 5 coresponds to 
+function key <f5>, ID 6 to <f6>, etc.). Processes listed on the directory 
+screen with a asriks (*) refer to the current process (ie, the one you are on 
+now). Processes listed with a plus sign (+) indicate that the process is 
+sleeping. See #2
+
+2. Processes. One may have at most 12 processes open at a time. Each may have a
+limitless amount of threads (the more threads, the greater lag time). 
+Processes that are 'privledged' have the authority to read/write directly to a 
+disk's sectors, access system files, manage other processes, etc. 
+Understandably, one must exersize caution when giving a process privledged 
+execution. See #3,"pr".
+One process may host another. When this happens, the hosting process is put to
+sleep. A sleeping process is in a state of suspence, and no threads are being 
+executed. Upon termination of the guest process (which is oblivious to being 
+hosted), the hosting process will wake up and resume operations. The guest 
+process will share the same virtual screen as the hosting process. See #3, "he"
+
+3. Software and Commands. SerpaeOS comes with a primitive colection of tools 
+and commands. The following disscusses each of these. A brief refresher can be 
+found by entering [help] in a shell.
+    sosupdt is the SerpaeOS updater. sosupdt requires privledged execution. It
+    also requires a kernel image (serpaeos.ki can be retrieved by building the
+    target version and then copying the ./bin/serpaeos.ki file onto the hard 
+    disk running SerpaeOS). It can be executed by simply typing [pr sosupdt 
+    x:/path/to/serpaeos.ki] into the shell, or alternativly entering [pr 
+    sosupdt] and entering the path later. After successfully running sosupdt, 
+    it is important to immediatly reboot SerpaeOS.
+
+    view is a file viewing utility. Simply type [view ~/LICENSE] or [view 
+    x:/usr/myfile] to read a file. If the file is longer than the screen, you 
+    can press 'c' to continue with the next 'page' of the file.
+
+    fapp is a file appending program. [fapp ~/sample.txt] is the command to 
+    edit the desired file. Simply type the information you wish to append, 
+    press ctrl + d, and it will be saved at the end of the file.
+
+    fwrite is a file writing program. Use of fwrite is identical to that of 
+    fapp, the difference being that the text overwrites that which is already 
+    in the file.
+
+    rm is a file removal program. Simply type rm, followed by a list of 
+    undesired files (directories are unsupported).
+
+    shell.elf is the SerpaeOS Shell.
+
+    pr gives privledged execution to an application (see #2 for definition of 
+    privledged execution). [pr myapp] will give 'myapp' privledged execution 
+    powers. Note that pr is a program. If it is desired to have that the 
+    current shell host pr (and pr hosts the target application, such as 
+    'myapp'), thanit is necissary to write the command as [he pr myapp], as 
+    opposed to [pr he myapp], which would attempt to execute a program called 
+    'he', which doesn't exist.
+
+    he specifies hosted execution. As illistrated above, it MUST be used before
+    the program name. A hosted program shares virtual screens with the host. It
+    also forces the host to sleep
+
+    kill is a SerpaeOS Shell command. Supply kill with a process ID and that 
+    process will immediatly be terminated (killed). Note that the Shell will 
+    need privledged powers to kill.
+
+    rc is a SerpaeOS Shell command used to find the return code of a terminated
+    process. rc will require the process ID. A return code of 232582381 means 
+    that this process was remotly terminated (such as with kill).
+
+The following programs are part of the MinGS package:
+    echo
+
+4. Keyboard. The SerpaeOS keyboard driver supports PS/2 compatable keyboards.
+On almost all QWERTY keyboards found in North America and Europe, what
+you see on the keyboard is what you will get. Note however that the keyboard 
+driver is targeted to QWERTY keyboards in North America. Thus, the occasional 
+British QWERTY keyboard will produce unexpected results, peticularly on the 
+numberpad. 
+A few uses of keyboard shortcuts and commands can be found in the above 
+information. The following is a brief recap:
+
+    Ctrl + Q:    this instantly terminates the currnt process.
+    Ctrl + D:    this sends EOF to the current process' keyboard buffer.
+    F1 - F12:    switch to process 1 through 12 (if it exists). See #1.
+    Home:        switch to the home Shell. See #1.
+    Super Key (upon release):   display the Directory Screen. See #1.
+    
+
+5. A walkthrough. The best way to become familiar with a new operating system 
+is through use (and, for programmers, by studying the source code, which is 
+available online at [https://serpaeos.sourceforge.io]). This walkthrough (and 
+really all of this manual) can serve as a guide to your use. 
+Upon booting to SerpaeOS, the kernel and bootloaders will do initialization of
+the keyboard, screen, disk(s), etc. This sould take about 5 seconds. Don't
+worry if you see 'KEREL ERROR (non fatal)'; this usually occures during disk 
+initialization
+The kernel will automatically launch a privledged instance of the SerpaeOS 
+Shell (accessable by pressing the <home> key. See #1).
+From there, type the desired program name (see #3) along with any arguments, 
+and the program will appear on a new virtual screen (unless it is hosted). 
+Switching between vitual screens (as described in #1) is much like switching
+between applications on an iOS or Android smartphone. Viewing the directory
+screen is like viewing the list of applications on you smartphone, except 
+opening the diectory screen is not necissary to switch processes (see #1).
+New software can be found on the internet. Since SerpaeOS does not as yet 
+support internet access, it is necissary to download the new software 
+on another operating system, and then move the file to the appropriate location
+on the hard disk with SerpaeOS.
+To do an update, download the target version of SerpaeOS from 
+[https://serpaeos.sourceforge.io]. On the disk with the old version of SerpaeOS
+delete the 0:/sys directory. Then copy the ./dirsys/sys directory that is found 
+on the download to the disk with SerpaeOS. Then copy the ./bin/serpaeos.ki file
+to a location on the disk other than the root directory. Then you can boot
+SerpaeOS and run the following command: [pr sosupdt].
+(See #3). After you reboot your computer, SerpaeOS is good to go! 

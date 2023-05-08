@@ -1,17 +1,8 @@
-*Close a program instantly by pressing ctrl + Q
+*Use up to 4 disks at a time!
 
-*stdlib "puts" function is available
+*MBR partitioning is supported for all disks excpet the Primary Master.
 
-*Date is shown on the diectory screen
+*Groundwork laid for PCI support, CD-ROM support, and the ISO 9660 filesystem.
 
-*Bug fix for multithreaded programs and task termination
+*We have started to adapt the GNU coreutils into what is called the MinGS (see ./programs/MinGS/ABOUT).
 
-*Spelling corrections (Canadian English)
-
-*Compatability for up to 2 disks (IDE master and slave disks on primary IDE controller). Corresponds to -hda and -hdb on QEmu and KVM
-
-*New FAT32 filesystem compatability
-
-*FAT16 bug fixes (fat16_delete and fat16_write)
-
-*More! Type "man" in the shell.

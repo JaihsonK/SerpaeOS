@@ -1,0 +1,7 @@
+SerpaeOS.img is a bootable disk image.
+serpaeos.ki is a kernel image. Use this kernel image to update from your last version of SerpaeOS (pr sosupdt 0:/path/to/serpaeos.ki)
+    Steps to update (NOTE: instrucions may chang slightly from version to the next, so read this document each time you want to update):
+        1. Copy serpaeos.ki to a location on a disk with the old version on SerpaeOS. Replace 0:/sys with ./dirsys/sys directory.
+        2. Boot the old version of SerpaeOS
+        3. *Immediatly* run 'pr sosupdt 0:/path/to/serpaeos.ki'
+        4. When installation is complete, reboot to your new copy of SerpaeOS!

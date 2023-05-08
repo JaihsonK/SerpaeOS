@@ -1,0 +1,10 @@
+Hello!
+This is a sample document. it is stored under the 0:/usr/files/ directory. To read the contents, simply type:
+	
+[view ~/sample.txt]
+
+To append to this file, type:
+
+[fapp ~/sample.txt]
+
+The SerpaeOS Shell has lots of usefull utilities! Try them out!
