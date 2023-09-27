@@ -1,14 +1,17 @@
+NOTE: SerpaeOS source code is not up-to-date on GitHub. Please check out SourceForge (serpaeos.sourceforge.io) for more recent versions. 
+
 SerpaeOS is an "educational" OS project. Disk images can be found in "./bin". You can run on QEmu/KVM by typing:
 $ qemu-system-i386 -hda ./bin/SerpaeOS.img -hdb ./path/to/secondary/disk -soundhw pcspk 
 or ...
 $ kvm -hda ./bin/SerpaeOS.img -hdb ./path/to/secondary/disk -soundhw pcspk
 
-It is important that -hda be ./bin/SerpaeOS.img because SerpaeOS only boots to master disk (hda)
+It is important that -hda be ./bin/SerpaeOS.img because SerpaeOS only boots to the master disk (had)
+The -soundhw part is optional.
 
 To build SerpaeOS, simply enter:
 $ ./build.sh
 
-A GCC cross-compiler, NASM, and linux shell (or WSL) is necissary for proper building.
+A GCC cross-compiler, NASM, and Linux shell (or WSL) are necessary for proper building.
 
 To run on QEmu, type:
 $ make run
@@ -16,8 +19,8 @@ $ make run
 To run on KVM (closer to real hardware execution), type:
 $ make test
 
-Steps to update SerpaeOS (NOTE: instrucions may chang slightly from version to the next, so read this document each time you want to update):
+Steps to update SerpaeOS (NOTE: instructions may change slightly from one version to the next, so read this document each time you want to update):
         1. Copy serpaeos.ki to a location on a disk with the old version on SerpaeOS. Replace 0:/sys with ./dirsys/sys directory.
         2. Boot the old version of SerpaeOS
-        3. *Immediatly* run 'pr sosupdt 0:/path/to/serpaeos.ki'
-        4. When installation is complete, reboot to your new copy of SerpaeOS!
+        3. *Immediately* run 'pr sosupdt 0:/path/to/serpaeos.ki'
+        4. When the installation is complete, reboot to your new copy of SerpaeOS!
